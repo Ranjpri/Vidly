@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Vidly_Auth.Models.Movie>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @if (!Model.Any())
+    {
+        <p>There are no movies to be displayed</p>
+    }
+    else
+    {
+        <table style="margin-top:50px;" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Movies</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model)
+                {
+                    <tr>
+                <td>@movie.Name</td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        }
+
+</div>
+

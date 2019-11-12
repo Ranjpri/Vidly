@@ -1,0 +1,31 @@
+﻿@using Vidly_Auth.ViewModel
+@model Vidly_Auth.ViewModel.RandomMovieViewModel
+@{
+    ViewBag.Title = "Random";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*
+    How to set a class Name
+*@
+@{
+    var className = Model.Customers.Count > 0 ? "popular" : null;
+}
+<h2 class="@className">@Model.Movie.Name</h2>
+
+@*This is a comment*@
+@*Case 3 - for loop*@
+<ul>
+    @foreach (var c in Model.Customers)
+    {
+        <li>@c.Name</li>
+    }
+</ul>
+@* IF condition *@
+@if (Model.Movie.Name == "Shawshank")
+{
+    <p>@Model.Movie.Name  is a brilliant Movie</p>
+}
+else
+{
+    <p>TOUGH</p>
+}
