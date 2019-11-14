@@ -5,26 +5,31 @@
 }
 
 <div>
+    <h2 style="margin-top:50px">Movies</h2>
     @if (!Model.Any())
     {
         <p>There are no movies to be displayed</p>
     }
     else
     {
-        <table style="margin-top:50px;" class="table table-bordered table-hover">
+        <button type="button" color:white; text-align:center" class="btn btn-primary">@Html.ActionLink("New Movie", "New", "Movies",new { @style = "color:white"})</button>
+        <table style="margin-top:20px;" class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>Movies</th>
+                    <th>Genre</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var movie in Model)
                 {
-                    <tr>
-                <td>@movie.Name</td>
-                    </tr>
-            }
-                </tbody>
+                <tr>
+                    <td>@Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.Id }, null)</td>
+                    <td>@movie.Genre.GenreName</td>
+                </tr>
+                   
+                }
+            </tbody>
             </table>
         }
 

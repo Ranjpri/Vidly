@@ -5,11 +5,21 @@ using System.Web;
 using System.Web.Mvc;
 using Vidly_Auth.Models;
 using Vidly_Auth.ViewModel;
+using System.Data.Entity;
 
 namespace Vidly_Auth.Controllers
 {
     public class MoviesController : Controller
     {
+        ApplicationDbContext _context;
+        public MoviesController()
+        {
+            _context = new ApplicationDbContext();
+        }
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
         // GET: Movies/Random
         public ActionResult Random()
         {
@@ -25,9 +35,36 @@ namespace Vidly_Auth.Controllers
 
             return View(viewModel);
         }
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int Id)
         {
-            return Content("id = " + id);
+            var movie = _context.Movies.Include(c => c.Genre).SingleOrDefault(n => n.Id == Id);
+            if (movie == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                return View(movie);
+            }
+        }
+        public ActionResult Save(Movie movie)
+        {          
+           _context.Movies.Add(movie);
+           _context.SaveChanges();
+           
+            return RedirectToAction("Index", "Movies");
+        }
+        public ActionResult New()
+        {
+            var genres = _context.Genres;
+            var movieFormViewModel = new MovieFormViewModel()
+            {
+                GenreDetails = genres.ToList(),
+                Movie = new Movie()
+                
+            };
+            return View(movieFormViewModel);
+
         }
         //public ActionResult Index(int? pageIndex, string sortField)
         //{
@@ -49,19 +86,10 @@ namespace Vidly_Auth.Controllers
 
         public ActionResult Index()
         {
-            var movies = GetMovies();
+            var movies = _context.Movies.Include(c=>c.Genre);
             return View(movies);
         }
 
-        public List<Movie> GetMovies()
-        {
-
-            List<Movie> movies = new List<Movie>
-            {
-                new Movie{ Id = 1, Name = "Shrek"},
-                new Movie{ Id = 2, Name = "Madagascar"}
-            };
-            return movies;
-        }
+        
     }
 }

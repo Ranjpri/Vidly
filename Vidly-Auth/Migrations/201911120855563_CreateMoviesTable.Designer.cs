@@ -7,13 +7,13 @@ namespace Vidly_Auth.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddDataAnnotationsToCustomer : IMigrationMetadata
+    public sealed partial class CreateMoviesTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddDataAnnotationsToCustomer));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreateMoviesTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201911112008533_AddDataAnnotationsToCustomer"; }
+            get { return "201911120855563_CreateMoviesTable"; }
         }
         
         string IMigrationMetadata.Source

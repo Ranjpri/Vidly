@@ -1,0 +1,18 @@
+﻿@model Vidly_Auth.Models.Movie
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>@Model.Name</h2>
+<ul>
+    @if (!(String.IsNullOrEmpty(Model.Genre.GenreName)))
+    {
+        <li>Genre :@Model.Genre.GenreName</li>
+    }
+    <li>Release Date : @Model.ReleaseDate.ToLongDateString()</li>
+    <li>Date Added : @Model.AddedDate.ToLongDateString()</li>
+    <li>Number in Stock : @Model.NumInStock </li>
+</ul>
+

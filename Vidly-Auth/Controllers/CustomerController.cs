@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Vidly_Auth.Models;
 using System.Data.Entity;
+using Vidly_Auth.ViewModel;
 
 namespace Vidly_Auth.Controllers
 {
@@ -20,7 +21,33 @@ namespace Vidly_Auth.Controllers
         {
             _context.Dispose();
         }
-
+        //Add New Customer
+        public ActionResult New()
+        {
+            var membershipTypes = _context.MembershipTypes;
+            CustomerFormViewModel customerViewModel = new CustomerFormViewModel();
+            customerViewModel.MembershipTypes = membershipTypes;
+            return View("CustomerForm", customerViewModel);
+        }
+        //Adding Create Customer
+        public ActionResult Save(Customer customer)
+        {
+            if (customer.ID == 0)
+            {
+                _context.Customers.Add(customer);
+            }
+            else
+            {
+                Customer customerInDB = _context.Customers.Single(c => c.ID == customer.ID);
+                customerInDB.Name = customer.Name;
+                customerInDB.BirthDate = customer.BirthDate;
+                customerInDB.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
+                customerInDB.MembershipTypeId = customer.MembershipTypeId;
+            }
+            
+            _context.SaveChanges();
+            return RedirectToAction("Index","Customer");
+        }
         // GET: Customer
         public ActionResult Index()
         {
@@ -28,9 +55,22 @@ namespace Vidly_Auth.Controllers
             var customers = _context.Customers.Include(c=>c.MembershipType);
             return View(customers);
         }
+        public ActionResult Edit(int Id)
+        {
+            var customers = _context.Customers.SingleOrDefault(c => c.ID == Id);
+            if (customers == null)
+            {
+                return HttpNotFound();
+            }
+            var customerViewModel = new CustomerFormViewModel {
+                Customer = customers,
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+            return View("CustomerForm", customerViewModel);
+        }
         public ActionResult Details(int Id)
         {
-            var customer = _context.Customers.SingleOrDefault(n => n.ID == Id);
+            var customer = _context.Customers.Include(c=>c.MembershipType).SingleOrDefault(n => n.ID == Id);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -41,6 +81,6 @@ namespace Vidly_Auth.Controllers
             }
 
         }
-        
+       
     }
 }
