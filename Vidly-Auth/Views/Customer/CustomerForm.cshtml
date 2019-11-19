@@ -6,28 +6,47 @@
 }
 &nbsp;
 &nbsp;
-<h2>New Customer</h2>
-@using (Html.BeginForm("Save", "Customer"))
+@if (Model.Customer.ID == 0)
 {
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.Name)
-        @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.BirthDate)
-        @Html.TextBoxFor(m => m.Customer.BirthDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Customer.MembershipTypeId)
-        @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "Name", Model.Customer.MembershipType), "Select Membership Type", new { @class = "form-control" })
-    </div>
-    <div class="form-check">
-        <label>
-            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsLetter)  Are you subscribed to newsletter?
-        </label>
-    </div>
-    @Html.HiddenFor(m => m.Customer.ID);
-    <button type="submit" class="btn btn-primary">Save</button>
+    <h2>New Customer</h2>
+}
+else
+{
+    <h2>Edit Customer</h2>
+}
 
+@using (Html.BeginForm("Save", "Customer"))
+{@Html.ValidationSummary(true, "Please fill out error fields")
+<div class="form-group">
+    @Html.LabelFor(m => m.Customer.Name)
+    @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Customer.Name)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Customer.MembershipTypeId)
+    @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "Name", Model.Customer.MembershipType), "Select Membership Type", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Customer.MembershipTypeId)
+
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Customer.BirthDate)
+    @Html.TextBoxFor(m => m.Customer.BirthDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Customer.BirthDate)
+</div>
+
+<div class="form-check">
+    <label>
+        @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsLetter)  Are you subscribed to newsletter?
+    </label>
+</div>
+@Html.HiddenFor(m => m.Customer.ID)
+@Html.AntiForgeryToken()
+<button type="submit" class="btn btn-primary">Save</button>
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
 }
 

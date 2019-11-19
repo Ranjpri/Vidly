@@ -35,24 +35,22 @@ namespace Vidly_Auth.Controllers
 
             return View(viewModel);
         }
+
         public ActionResult Edit(int Id)
-        {
-            var movie = _context.Movies.Include(c => c.Genre).SingleOrDefault(n => n.Id == Id);
+        {           
+            var movie = _context.Movies.Include(c => c.Genre).Single(n => n.Id == Id);
             if (movie == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                return View(movie);
+                var movieViewModel = new MovieFormViewModel(movie)
+                {                    
+                    GenreDetails = _context.Genres.ToList()
+                };
+                return View("MovieForm", movieViewModel);
             }
-        }
-        public ActionResult Save(Movie movie)
-        {          
-           _context.Movies.Add(movie);
-           _context.SaveChanges();
-           
-            return RedirectToAction("Index", "Movies");
         }
         public ActionResult New()
         {
@@ -60,29 +58,42 @@ namespace Vidly_Auth.Controllers
             var movieFormViewModel = new MovieFormViewModel()
             {
                 GenreDetails = genres.ToList(),
-                Movie = new Movie()
-                
             };
-            return View(movieFormViewModel);
+            return View("MovieForm", movieFormViewModel);
 
         }
-        //public ActionResult Index(int? pageIndex, string sortField)
-        //{
-        //    if (!pageIndex.HasValue)
-        //    {
-        //        pageIndex = 2;
-        //    }
-        //    if (String.IsNullOrEmpty(sortField))
-        //    {
-        //        sortField = "Test Name";
-        //    }
-        //    return Content(String.Format("Here {0} {1}", pageIndex, sortField));
-        //}
-        //[Route("movies/released/{year}/{month:regex(\\d{2}):range(1,3)}")]
-        //public ActionResult ByReleaseDate(int year, int month)
-        //{
-        //    return Content("Year = " + year + "& Month = " + month);
-        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(Movie movie)
+        {
+            if (!ModelState.IsValid)
+            {
+                MovieFormViewModel mvModel = new MovieFormViewModel(movie)
+                {
+                    GenreDetails = _context.Genres.ToList()
+                };
+                return View("MovieForm", mvModel);
+            }
+            if (movie.Id == 0)
+            {
+                //New Movie
+                _context.Movies.Add(movie);
+            }
+            else
+            {
+                var movieInDB = _context.Movies.Single(c=>c.Id == movie.Id);
+                movieInDB.Name = movie.Name;
+                movieInDB.ReleaseDate = movie.ReleaseDate;
+                movieInDB.GenreId = movie.GenreId;
+                movieInDB.NumInStock = movie.NumInStock;
+            }
+           
+           _context.SaveChanges();           
+            return RedirectToAction("Index", "Movies");
+        }
+       
+        
 
         public ActionResult Index()
         {

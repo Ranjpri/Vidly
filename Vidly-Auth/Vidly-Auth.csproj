@@ -49,12 +49,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -167,7 +176,9 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\CustomersController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -211,6 +222,34 @@
     <Compile Include="Migrations\201911141158279_GenreInContext.Designer.cs">
       <DependentUpon>201911141158279_GenreInContext.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911141939353_GenreInContext2.cs" />
+    <Compile Include="Migrations\201911141939353_GenreInContext2.Designer.cs">
+      <DependentUpon>201911141939353_GenreInContext2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911141947353_datetime2AddedDate.cs" />
+    <Compile Include="Migrations\201911141947353_datetime2AddedDate.Designer.cs">
+      <DependentUpon>201911141947353_datetime2AddedDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911141952282_datetime2AddedDate2.cs" />
+    <Compile Include="Migrations\201911141952282_datetime2AddedDate2.Designer.cs">
+      <DependentUpon>201911141952282_datetime2AddedDate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911141955441_datetimeNullToRelDate.cs" />
+    <Compile Include="Migrations\201911141955441_datetimeNullToRelDate.Designer.cs">
+      <DependentUpon>201911141955441_datetimeNullToRelDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911151735178_addedNewValidation.cs" />
+    <Compile Include="Migrations\201911151735178_addedNewValidation.Designer.cs">
+      <DependentUpon>201911151735178_addedNewValidation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911151938175_addedNewValidation1.cs" />
+    <Compile Include="Migrations\201911151938175_addedNewValidation1.Designer.cs">
+      <DependentUpon>201911151938175_addedNewValidation1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911180938390_AddMembershipName.cs" />
+    <Compile Include="Migrations\201911180938390_AddMembershipName.Designer.cs">
+      <DependentUpon>201911180938390_AddMembershipName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -218,6 +257,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MembershipType.cs" />
+    <Compile Include="Models\Min18YrsIfMember.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -286,12 +326,12 @@
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
     <Content Include="Views\Movies\Random.cshtml" />
-    <Content Include="Views\Movies\Edit.cshtml" />
     <Content Include="Views\Customer\CustomerForm.cshtml" />
-    <Content Include="Views\Movies\New.cshtml" />
+    <Content Include="Views\Movies\MovieForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Customers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -333,6 +373,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911141158279_GenreInContext.resx">
       <DependentUpon>201911141158279_GenreInContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911141939353_GenreInContext2.resx">
+      <DependentUpon>201911141939353_GenreInContext2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911141947353_datetime2AddedDate.resx">
+      <DependentUpon>201911141947353_datetime2AddedDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911141952282_datetime2AddedDate2.resx">
+      <DependentUpon>201911141952282_datetime2AddedDate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911141955441_datetimeNullToRelDate.resx">
+      <DependentUpon>201911141955441_datetimeNullToRelDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911151735178_addedNewValidation.resx">
+      <DependentUpon>201911151735178_addedNewValidation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911151938175_addedNewValidation1.resx">
+      <DependentUpon>201911151938175_addedNewValidation1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911180938390_AddMembershipName.resx">
+      <DependentUpon>201911180938390_AddMembershipName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

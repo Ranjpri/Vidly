@@ -24,14 +24,30 @@ namespace Vidly_Auth.Controllers
         //Add New Customer
         public ActionResult New()
         {
-            var membershipTypes = _context.MembershipTypes;
-            CustomerFormViewModel customerViewModel = new CustomerFormViewModel();
-            customerViewModel.MembershipTypes = membershipTypes;
+            var membershipTypes = _context.MembershipTypes.ToList();
+            CustomerFormViewModel customerViewModel = new CustomerFormViewModel()
+            {
+                MembershipTypes = membershipTypes, 
+                Customer = new Customer()
+            };
+            
             return View("CustomerForm", customerViewModel);
         }
         //Adding Create Customer
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
+            if (!(ModelState.IsValid))
+            {
+                var customerViewModel = new CustomerFormViewModel()
+                {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipTypes
+                };
+                return View("CustomerForm", customerViewModel);
+            }
+            
             if (customer.ID == 0)
             {
                 _context.Customers.Add(customer);
