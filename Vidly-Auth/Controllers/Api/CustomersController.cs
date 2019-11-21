@@ -1,17 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Web.Http;
 using Vidly_Auth.Models;
+using AutoMapper;
+using Vidly_Auth.Models.Dto;
+using System;
 
 namespace Vidly_Auth.Controllers.Api
 {
     public class CustomersController : ApiController
     {
         ApplicationDbContext _context;
+        IMapper iMapper;
         public CustomersController()
         {
             _context = new ApplicationDbContext();
+            var config = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Customer, CustomerDto>();
+                cfg.CreateMap<CustomerDto, Customer>();
+            });
+            iMapper = config.CreateMapper();
         }
         protected override void Dispose(bool disposing)
         {
@@ -20,62 +28,61 @@ namespace Vidly_Auth.Controllers.Api
 
 
         //GET /api/Customers
-        public IEnumerable<Customer> GetCustomers()
+        public IHttpActionResult GetCustomers()
         {
-            return _context.Customers;
+            var customersDto = _context.Customers.ToList().Select(iMapper.Map<Customer, CustomerDto>);
+            return Ok(customersDto);
         }
 
         //Get /api/Customers/1
-        public Customer GetCustomer(int id)
+        public IHttpActionResult GetCustomer(int id)
         {
             Customer customer = _context.Customers.SingleOrDefault(c => c.ID == id);
             if (customer == null)
-                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
-            return customer;
+                return NotFound();
+            CustomerDto customerDto = iMapper.Map<Customer, CustomerDto>(customer);
+            return Ok(customerDto);
         }
 
         //POST /api/Customers
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public IHttpActionResult  CreateCustomer(CustomerDto customerDto)
         {
+            Customer customer = iMapper.Map<CustomerDto, Customer>(customerDto);
             if (!ModelState.IsValid)
-            {
-                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
-            }
+                return BadRequest();
+            
             _context.Customers.Add(customer);
             _context.SaveChanges();
-            return customer;
+            customerDto.ID = customer.ID;
+            return Created(new Uri(Request.RequestUri+"/"+customerDto.ID),customerDto);
         }
 
         //PUT /api/Customer/1
         [HttpPut]
-        public Customer UpdateCustomer(int id, Customer customer)
+        public IHttpActionResult UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
+                return BadRequest();
             var customerInDb = _context.Customers.SingleOrDefault(c => c.ID == id);
             if (customerInDb == null)
-            {
-                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
-            }
-            customerInDb.Name = customer.Name;
-            customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
-            customerInDb.MembershipTypeId = customer.MembershipTypeId;
-            customerInDb.BirthDate = customer.BirthDate;
-
+                return NotFound();
+            iMapper.Map<CustomerDto, Customer>(customerDto, customerInDb);
+           
             _context.SaveChanges();
-            return customer;
+            return Ok(customerDto);
         }
 
         //Delete /api/Customers/1
         [HttpDelete]
-        public void DeleteCustomer(int id)
+        public IHttpActionResult DeleteCustomer(int id)
         {
             Customer customer = _context.Customers.SingleOrDefault(c => c.ID == id);
             if (customer == null)
                 throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
             _context.Customers.Remove(customer);
             _context.SaveChanges();
+            return Ok();
         }
     }
 
