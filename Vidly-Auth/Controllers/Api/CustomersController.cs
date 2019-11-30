@@ -5,6 +5,7 @@ using Vidly_Auth.Models;
 using AutoMapper;
 using Vidly_Auth.Models.Dto;
 using System;
+using System.Data.Entity;
 
 namespace Vidly_Auth.Controllers.Api
 {
@@ -18,6 +19,8 @@ namespace Vidly_Auth.Controllers.Api
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<Customer, CustomerDto>();
                 cfg.CreateMap<CustomerDto, Customer>();
+                cfg.CreateMap<MembershipType, MembershipTypeDto>();
+
             });
             iMapper = config.CreateMapper();
         }
@@ -30,7 +33,7 @@ namespace Vidly_Auth.Controllers.Api
         //GET /api/Customers
         public IHttpActionResult GetCustomers()
         {
-            var customersDto = _context.Customers.ToList().Select(iMapper.Map<Customer, CustomerDto>);
+            var customersDto = _context.Customers.Include(c => c.MembershipType).ToList().Select(iMapper.Map<Customer, CustomerDto>);
             return Ok(customersDto);
         }
 
