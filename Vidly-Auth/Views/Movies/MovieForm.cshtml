@@ -4,10 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<h2>New Movie</h2>
-
-
+@if (Model.Id == 0)
+{
+    <h2>New Movie</h2>
+}
+else
+{
+    <h2>Edit Movie</h2>
+}
 
 
 @using (Html.BeginForm("Save", "Movies"))
@@ -39,5 +43,5 @@
 }
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval");
-    }
+}
 

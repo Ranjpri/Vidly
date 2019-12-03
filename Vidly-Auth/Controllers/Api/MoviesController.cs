@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using System;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Vidly_Auth.Models;
 using Vidly_Auth.Models.Dto;
@@ -20,6 +18,7 @@ namespace Vidly_Auth.Controllers.Api
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<Movie, MovieDto>();
                 cfg.CreateMap<MovieDto, Movie>();
+                cfg.CreateMap<Genre, GenreDto>();
             });
             iMapper = config.CreateMapper();
         }
@@ -31,14 +30,14 @@ namespace Vidly_Auth.Controllers.Api
         //GET /api/movies
         public IHttpActionResult GetMovies()
         {
-            var moviesDto = _context.Movies.ToList().Select(iMapper.Map<Movie, MovieDto>);
+            var moviesDto = _context.Movies.Include(c => c.Genre).ToList().Select(iMapper.Map<Movie, MovieDto>);
             return Ok(moviesDto);
         }
 
         //GET /api/movies/1
         public IHttpActionResult GetMovies(int id)
         {
-            var movie = _context.Movies.SingleOrDefault(c => c.Id == id);
+            var movie = _context.Movies.Include(c => c.Genre).SingleOrDefault(c => c.Id == id);
             if (movie == null)
             {
                 return NotFound();
@@ -49,6 +48,7 @@ namespace Vidly_Auth.Controllers.Api
 
 
         //POST /api/movies
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [HttpPost]
         public IHttpActionResult CreateMovie(MovieDto movieDto)
         {
@@ -64,6 +64,7 @@ namespace Vidly_Auth.Controllers.Api
         }
 
         //PUT /api/Movies/1
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [HttpPut]
         public IHttpActionResult UpdateMovie(int id, MovieDto movieDto)
         {
@@ -79,6 +80,7 @@ namespace Vidly_Auth.Controllers.Api
         }
 
         //Delete /api/Moves/1
+        [Authorize(Roles = RoleName.CanManageMovies)]
         [HttpDelete]
         public IHttpActionResult DeleteMovie(int id)
         {

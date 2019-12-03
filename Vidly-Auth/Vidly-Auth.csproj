@@ -18,7 +18,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44358</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -255,18 +255,46 @@
     <Compile Include="Migrations\201911180938390_AddMembershipName.Designer.cs">
       <DependentUpon>201911180938390_AddMembershipName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912011716085_UserAndRoleData.cs" />
+    <Compile Include="Migrations\201912011716085_UserAndRoleData.Designer.cs">
+      <DependentUpon>201912011716085_UserAndRoleData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912020943445_AddingDrivingLicence.cs" />
+    <Compile Include="Migrations\201912020943445_AddingDrivingLicence.Designer.cs">
+      <DependentUpon>201912020943445_AddingDrivingLicence.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912031007476_PhoneNumberAdded.cs" />
+    <Compile Include="Migrations\201912031007476_PhoneNumberAdded.Designer.cs">
+      <DependentUpon>201912031007476_PhoneNumberAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912031017484_PhoneNumberAdded1.cs" />
+    <Compile Include="Migrations\201912031017484_PhoneNumberAdded1.Designer.cs">
+      <DependentUpon>201912031017484_PhoneNumberAdded1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912031019062_PhoneNumberAdded2.cs" />
+    <Compile Include="Migrations\201912031019062_PhoneNumberAdded2.Designer.cs">
+      <DependentUpon>201912031019062_PhoneNumberAdded2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912031020191_PhoneNumberAdded3.cs" />
+    <Compile Include="Migrations\201912031020191_PhoneNumberAdded3.Designer.cs">
+      <DependentUpon>201912031020191_PhoneNumberAdded3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Dto\CustomerDto.cs" />
+    <Compile Include="Models\Dto\GenreDto.cs" />
     <Compile Include="Models\Dto\MembershipTypeDto.cs" />
     <Compile Include="Models\Dto\MovieDto.cs" />
+    <Compile Include="Models\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="Models\Genre.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Min18YrsIfMember.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\RoleName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\CustomerFormViewModel.cs" />
@@ -570,10 +598,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Customer\Details.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
-    <Content Include="Views\Movies\Index.cshtml" />
+    <Content Include="Views\Movies\List.cshtml" />
     <Content Include="Views\Movies\Random.cshtml" />
     <Content Include="Views\Customer\CustomerForm.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
+    <Content Include="Views\Movies\ReadOnlyList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -641,6 +670,24 @@
     <EmbeddedResource Include="Migrations\201911180938390_AddMembershipName.resx">
       <DependentUpon>201911180938390_AddMembershipName.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912011716085_UserAndRoleData.resx">
+      <DependentUpon>201912011716085_UserAndRoleData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912020943445_AddingDrivingLicence.resx">
+      <DependentUpon>201912020943445_AddingDrivingLicence.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912031007476_PhoneNumberAdded.resx">
+      <DependentUpon>201912031007476_PhoneNumberAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912031017484_PhoneNumberAdded1.resx">
+      <DependentUpon>201912031017484_PhoneNumberAdded1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912031019062_PhoneNumberAdded2.resx">
+      <DependentUpon>201912031019062_PhoneNumberAdded2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912031020191_PhoneNumberAdded3.resx">
+      <DependentUpon>201912031020191_PhoneNumberAdded3.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -660,7 +707,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>65522</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:65522/</IISUrl>
+          <IISUrl>https://localhost:44358/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

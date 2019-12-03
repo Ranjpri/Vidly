@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Vidly_Auth.Models.Movie>
+﻿
+@model IEnumerable<Vidly_Auth.Models.Movie>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,22 +7,22 @@
 
 <div>
     <h2 style="margin-top:50px">Movies</h2>
-   
-        <button type="button" color:white; text-align:center" class="btn btn-primary">@Html.ActionLink("New Movie", "New", "Movies", new { @style = "color:white" })</button>
-        <table id ="movies" style="margin-top:20px;" class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Movies</th>
-                    <th>Genre</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-        </table>
-   
+
+    <button type="button" color:white; text-align:center" class="btn btn-primary">@Html.ActionLink("New Movie", "New", "Movies", new { @style = "color:white" })</button>
+    <table id="movies" style="margin-top:20px;" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Movies</th>
+                <th>Genre</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+    </table>
+
 </div>
 @section scripts
 {
-    <script>  
+    <script>
 
         $(document).ready(function () {
             console.log("In the Data Table");
@@ -66,14 +67,14 @@
                             url: "/api/movies/" + button.attr("data-movie-id"),
                             method: "DELETE",
                             success: function () {
-                                table.row(button.parents("tr")).remove().draw(); 
+                                table.row(button.parents("tr")).remove().draw();
                             }
                         });
                     }
                 });
             });
         });
-                   
+
     </script>
 }
 
