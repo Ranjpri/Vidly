@@ -21,14 +21,16 @@ namespace Vidly_Auth.Models
 
         public DateTime? AddedDate { get; set; }
 
-        [Display(Name="Number In Stock")]
-        [Range(1,20)]
+        [Display(Name = "Number In Stock")]
+        [Range(1, 20)]
         public short NumInStock { get; set; }
 
         public Genre Genre { get; set; }
 
         [Required]
-        [Display(Name ="Genre")]
+        [Display(Name = "Genre")]
         public short GenreId { get; set; }
+
+        public int NumAvailability { get; set; }
     }
 }
