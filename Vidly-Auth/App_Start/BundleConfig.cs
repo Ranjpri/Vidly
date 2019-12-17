@@ -27,10 +27,10 @@ namespace Vidly_Auth
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                        "~/Content/bootstrap-lumen.css",
-                      "~/Content/Site.css",
+                      "~/Content/Site.css",                      
                       "~/Content/DataTables/dataTables.bootstrap.css",
-                      "~/Content/toastr.css",
-                      "~/Content/toastr.css",
+                      "~/Content/bootstrap-theme.css",
+                      "~/Content/toastr.css",                     
                       "~/Content/typeahead.css"));
         }
     }
